@@ -1,0 +1,86 @@
+:root {
+    --low_color: #FF6666;
+    --medium_color: #F9FD63;
+    --high_color: #85E485;
+
+    --covered_color: #85E485;
+    --uncovered_color: #FF8C8C;
+}
+.file-source {
+    font-family: monospace;
+    width: 100%;
+    margin: 0px;
+}
+.file-source th {
+    padding: 1px 10px;
+}
+.file-source td {
+    white-space: pre;
+    padding: 1px 10px;
+}
+
+.file-source {
+    border-spacing: 0;
+}
+
+.source-line.hit .linecount {
+    background-color: var(--covered_color) !important;
+}
+.source-line.hit .src {
+    background-color: var(--covered_color) !important;
+}
+.source-line.miss .linecount {
+    background-color: var(--uncovered_color) !important;
+}
+.source-line.miss .src {
+    background-color: var(--uncovered_color) !important;
+}
+
+.right {
+    text-align: right;
+}
+
+.lineno {
+    background-color: #EFE383;
+    border-right: 1px solid #BBB15F;
+    text-align: right;
+    unicode-bidi: embed;
+    font-family: monospace;
+    white-space: pre;
+}
+.linebranch, .linedecision, .linecount {
+    font-family: monospace;
+    border-right: 1px gray solid;
+    background-color: lightgray;
+    text-align: right;
+}
+
+.legend > span {
+    padding: 2px 3px;
+}
+
+table.file-listing .progress {
+    height: auto;
+}
+
+.legend .coverage-low, table.coverage .coverage-low, table.file-listing .progress-bar.coverage-low {
+    background-color: var(--low_color) !important;
+    color: black;
+}
+.legend .coverage-mid, table.coverage .coverage-mid, table.file-listing .progress-bar.coverage-mid {
+    background-color: var(--medium_color) !important;
+    color: black;
+}
+.legend .coverage-high, table.coverage .coverage-high, table.file-listing .progress-bar.coverage-high {
+    background-color: var(--high_color) !important;
+    color: black;
+}
+
+table.file-listing td.bar {
+    min-width: 100px;
+}
+
+table.file-listing td.percentage, table.file-listing td.detail {
+    width: 60px;
+    text-align: center;
+}

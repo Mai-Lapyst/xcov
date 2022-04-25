@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ title }} &gt; {{ file.path }}</title>
+        <meta name="description" content="Code coverage report">
+        <meta name="generator" content="xcov">
+        <link href="{{ rootPath }}/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ rootPath }}/theme.css" rel="stylesheet">
+    </head>
+    <body class="container mt-3 mb-3">
+        <h2><a href="{{ rootPath }}/index.html">{{ title }}</a> &gt; {{ file.path }}</h2>
+        <div class="row row-cols-2 mt-3">
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">Metadata</h5>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr><th>Date:</th><td>{{ date }}</td></tr>
+                                <tr><th>Original path:</th><td>{{ file.path }}</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">Coverage</h5>
+                    <div class="card-body">
+                        <table class="table table-bordered coverage">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Hits</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Coverage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Lines</th>
+                                    <td>{{ file.lineStats.hits }}</td>
+                                    <td>{{ file.lineStats.total }}</td>
+                                    <td class="{{ file.lineStats.coverage_level }}">{{ roundPercentage(file.lineStats.coverage, 1) }}%</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Functions</th>
+                                    <td>{{ file.funcStats.hits }}</td>
+                                    <td>{{ file.funcStats.total }}</td>
+                                    <td class="{{ file.funcStats.coverage_level }}">{{ roundPercentage(file.funcStats.coverage, 1) }}%</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Branches</th>
+                                    <td>{{ file.branchStats.hits }}</td>
+                                    <td>{{ file.branchStats.total }}</td>
+                                    <td class="{{ file.branchStats.coverage_level }}">{{ roundPercentage(file.branchStats.coverage, 1) }}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <details>
+            <summary>List of functions</summary>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Function</th>
+                        <th scope="col">Line</th>
+                        <th scope="col">Call count</th>
+                    </tr>
+                </thead>
+                <tbody>
+## for func in file.functions
+                    <tr>
+                        <td>{{ func.demangled_name }}</td>
+                        <td>{{ func.start_line }}</td>
+                        <td>{{ func.execution_count }}</td>
+                    </tr>
+## endfor
+                </tbody>
+            </table>
+        </details>
+        <table class="file-source">
+            <thead>
+                <tr>
+                    <th scope="col" class="right">Line</th>
+                    <th scope="col" class="right">Branches</th>
+                    <th scope="col" class="right">Exec</th>
+                    <th scope="col">Source</th>
+                </tr>
+            </thead>
+            <tbody>
+## for line in expandLines(file)
+                <tr class="source-line {{ line.state }}">
+                    <td class="lineno">{{ line.line_number }}</td>
+                    <td class="linebranch"></td>
+                    <td class="linecount">{% if line.coverage_present %}{% if line.count > 0 %}{{ line.count }}{% else %}✗{% endif %}{% endif %}</td>
+                    <td class="src">{{ line.source_line }}</td>
+                </tr>
+## endfor
+            </tbody>
+        </table>
+    </body>
+</html>

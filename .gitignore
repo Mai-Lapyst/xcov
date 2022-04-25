@@ -1,0 +1,12 @@
+# Builds, caches, etc.
+*.gcov
+.xcov_cache
+build
+tmp_build
+gcovr
+test_html
+test
+
+# Libs
+libs
+**/bootstrap.min.css

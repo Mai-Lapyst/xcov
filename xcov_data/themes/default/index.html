@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ title }}</title>
+        <meta name="description" content="Code coverage report">
+        <meta name="generator" content="xcov">
+        <link href="./bootstrap.min.css" rel="stylesheet">
+        <link href="./theme.css" rel="stylesheet">
+    </head>
+    <body class="container mt-3 mb-3">
+        <h2>{{ title }}</h2>
+        <div class="row row-cols-2 mt-3">
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">Metadata</h5>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr><th>Date:</th><td>{{ date }}</td></tr>
+                                <tr>
+                                    <th>Legend:</th>
+                                    <td class="legend">
+                                        <span class="coverage-low">low: >= 0%</span>
+                                        <span class="coverage-mid">medium: >= 75.0%</span>
+                                        <span class="coverage-high">high: >= 90.0%</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <h5 class="card-header">Coverage</h5>
+                    <div class="card-body">
+                        <table class="table table-bordered coverage">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Hits</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Coverage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Lines</th>
+                                    <td>{{ report.lineStats.hits }}</td>
+                                    <td>{{ report.lineStats.total }}</td>
+                                    <td class="{{ report.lineStats.coverage_level }}">{{ roundPercentage(report.lineStats.coverage, 1) }}%</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Functions</th>
+                                    <td>{{ report.funcStats.hits }}</td>
+                                    <td>{{ report.funcStats.total }}</td>
+                                    <td class="{{ report.funcStats.coverage_level }}">{{ roundPercentage(report.funcStats.coverage, 1) }}%</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Branches</th>
+                                    <td>{{ report.branchStats.hits }}</td>
+                                    <td>{{ report.branchStats.total }}</td>
+                                    <td class="{{ report.branchStats.coverage_level }}">{{ roundPercentage(report.branchStats.coverage, 1) }}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h3>By file</h3>
+        <table class="table table-bordered table-striped file-listing">
+            <thead>
+                <tr>
+                    <th scope="col">File</th>
+                    <th scope="col" colspan="2">Lines</th>
+                    <th scope="col" colspan="2">Functions</th>
+                    <th scope="col" colspan="2">Branches</th>
+                </tr>
+            </thead>
+            <tbody>
+## for file in report.files
+                <tr>
+                    <td>
+                        <a href="{{ filename(file.path) }}.html">{{ file.path }}</a>
+                    </td>
+                    <td class="bar">
+                        <div class="progress">
+                            <div class="progress-bar {{ file.lineStats.coverage_level }}" role="progressbar"
+                                aria-valuenow="{{ round(file.lineStats.coverage, 0) }}"
+                                style="width: {{ round(file.lineStats.coverage, 0) }}%"
+                                aria-valuemin="0" aria-valuemax="100">{{ roundPercentage(file.lineStats.coverage, 1) }}%</div>
+                        </div>
+                    </td>
+                    <td class="detail">{{ file.lineStats.hits }}/{{ file.lineStats.total }}</td>
+                    <!--<td class="percentage">{{ roundPercentage(file.funcStats.coverage, 1) }}%</td>-->
+                    <td class="bar">
+                        <div class="progress">
+                            <div class="progress-bar {{ file.funcStats.coverage_level }}" role="progressbar"
+                                aria-valuenow="{{ round(file.funcStats.coverage, 0) }}"
+                                style="width: {{ round(file.funcStats.coverage, 0) }}%"
+                                aria-valuemin="0" aria-valuemax="100">{{ roundPercentage(file.funcStats.coverage, 1) }}%</div>
+                        </div>
+                    </td>
+                    <td class="detail">{{ file.funcStats.hits }}/{{ file.funcStats.total }}</td>
+                    <td class="percentage">{{ roundPercentage(file.branchStats.coverage, 1) }}%</td>
+                    <td class="detail">{{ file.branchStats.hits }}/{{ file.branchStats.total }}</td>
+                </tr>
+## endfor
+            </tbody>
+        </table>
+    </body>
+</html>
