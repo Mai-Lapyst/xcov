@@ -95,6 +95,8 @@ namespace xcov {
                             }
                             continue;
                         }
+
+                        std::cerr << "[Config " << path.string() << "] Warning: unknown key '" << key << "' for section 'main'" << std::endl;
                         break;
                     }
 
@@ -102,6 +104,8 @@ namespace xcov {
                         CONFIG_KEY(langDef);
                         CONFIG_KEY(outFormat);
                         XCONFIG_KEY("dataDir", sh_dataDir);
+
+                        std::cerr << "[Config " << path.string() << "] Warning: unknown key '" << key << "' for section 'source_highlight'" << std::endl;
                         break;
                     }
                 }
