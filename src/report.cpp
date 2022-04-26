@@ -118,6 +118,49 @@ namespace xcov {
 
     // -------------------------------------------------------------------------------- //
 
+    void SourceFile::applyLineExclusions() {
+        std::ifstream srcFile(this->path);
+        if (!srcFile) {
+            printf("Error: could not open source file %s\n", this->path.c_str());
+            return;
+        }
+
+        std::string line;
+        long line_number = 1;
+        bool is_inside_exluded = false;
+        while (std::getline(srcFile, line)) {
+            if (line.find("LCOV_EXCL_START") != std::string::npos) {
+                is_inside_exluded = true;
+            }
+            if (line.find("LCOV_EXCL_STOP") != std::string::npos) {
+                is_inside_exluded = false;
+            }
+
+            bool is_line_excluded = is_inside_exluded || (line.find("LCOV_EXCL_LINE") != std::string::npos);
+            if (is_line_excluded) {
+                std::vector<LineCoverage>::iterator lineCovData = std::find_if(
+                    this->lines.begin(), this->lines.end(),
+                    [line_number](LineCoverage& entry) {
+                        return entry.line_number == line_number;
+                    }
+                );
+                if (lineCovData != this->lines.end()) {
+                    // change linestats
+                    this->lineStats.total--;
+                    if (lineCovData->count > 0) {
+                        this->lineStats.hits--;
+                    }
+                    this->lineStats.recalcCoverage();
+                    this->lines.erase(lineCovData);
+                }
+            }
+
+            line_number++;
+        }
+
+        srcFile.close();
+    }
+
     bool SourceFile::expandLines(std::vector<SourceLine>& sourceLines, Config& conf) {
         std::ifstream srcFile(this->path);
         if (!srcFile) {
@@ -256,6 +299,7 @@ namespace xcov {
 
         for (SourceFile& srcFile : this->sourceFiles) {
             srcFile.recalcStats();
+            srcFile.applyLineExclusions();
             this->lineStats += srcFile.lineStats;
             this->funcStats += srcFile.funcStats;
             this->branchStats += srcFile.branchStats;

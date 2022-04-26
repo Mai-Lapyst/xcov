@@ -141,6 +141,9 @@ namespace xcov {
 
         CoverageStats lineStats, funcStats, branchStats;
 
+        // should only be called after the final addLineData and addFuncData
+        void applyLineExclusions();
+
         bool expandLines(std::vector<SourceLine>& sourceLines, Config& conf);
 
         void addLineData(LineCoverage& newLine);
