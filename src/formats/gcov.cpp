@@ -110,7 +110,19 @@ namespace xcov {
                 };
 
                 utils::exec_process("gcov", args, conf.verboseLevel >= 2);
-                fs::rename(fs::current_path() / output_file, cache_path / output_file);
+
+                if (fs::exists(fs::current_path() / output_file)) {
+                    fs::rename(fs::current_path() / output_file, cache_path / output_file);
+                }
+                else {
+                    // sometimes it just generates it without the ending of the input file;
+                    // i.e. when the input is main.cpp.gcda it dosnt generate main.cpp.gcda.gcov.json.gz
+                    // but rather main.cpp.gcov.json.gz
+                    std::string f = path.filename().string();
+                    output_file = f.substr(0, f.find_last_of(".")) + ".gcov.json.gz";
+
+                    fs::rename(fs::current_path() / output_file, cache_path / output_file);
+                }
             }
 
             gGcovOutputFiles.push_back( cache_path / output_file );
