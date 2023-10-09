@@ -158,6 +158,10 @@ namespace xcov {
                     continue;
                 }
 
+                if (conf.isExcludedSource(gcovSrcFile.file)) {
+                    continue;
+                }
+
                 SourceFile& srcFile = report.findOrCreate(gcovSrcFile.file);
 
                 for (GCovLine& line : gcovSrcFile.lines) {

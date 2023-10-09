@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <regex>
 
 #ifndef DEFAULT_TEMPL_PATH
     #warning "No DEFAULT_TEMPL_PATH defined, assuming development-environment ($pwd/xcov_data/themes/default)"
@@ -39,6 +40,12 @@ namespace xcov {
         int verboseLevel = 0;
 
         // ----------------------------------------
+        //      Source filters
+        // ----------------------------------------
+
+        std::vector<std::regex> source_excludes;
+
+        // ----------------------------------------
         //      GNU source-highlight
         // ----------------------------------------
 
@@ -64,6 +71,15 @@ namespace xcov {
          * @param path the path to load from
          */
         void loadFrom(fs::path path);
+
+        /**
+         * @brief Checks wether or not a given sourcefile is excluded
+         * 
+         * @param source_file the sourcefile to test
+         * @return true if the file is excluded
+         * @return false otherwise
+         */
+        bool isExcludedSource(std::string source_file);
 
     };
 

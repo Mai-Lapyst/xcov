@@ -18,6 +18,7 @@ namespace xcov {
         // normal sections wich we can have keys for
         SEC_MAIN,
         SEC_HIGHLIGHT,
+        SEC_SOURCES,
     };
 
     void Config::loadFrom(fs::path path) {
@@ -49,6 +50,9 @@ namespace xcov {
                 }
                 else if (sectionName == "source_highlight") {
                     section = SEC_HIGHLIGHT;
+                }
+                else if (sectionName == "sources") {
+                    section = SEC_SOURCES;
                 }
                 else {
                     std::cerr << "[Config " << path.string() << "] Warning: unknown section '" << sectionName << "'; keys in it will be ignored" << std::endl;
@@ -108,6 +112,16 @@ namespace xcov {
                         std::cerr << "[Config " << path.string() << "] Warning: unknown key '" << key << "' for section 'source_highlight'" << std::endl;
                         break;
                     }
+
+                    case SEC_SOURCES: {
+                        if (key == "exclude") {
+                            this->source_excludes.push_back( std::regex(val, std::regex_constants::ECMAScript) );
+                            continue;
+                        }
+
+                        std::cerr << "[Config " << path.string() << "] Warning: unknown key '" << key << "' for section 'sources'" << std::endl;
+                        break;
+                    }
                 }
 
                 #undef CONFIG_KEY
@@ -119,6 +133,16 @@ namespace xcov {
         }
 
         file.close();
+    }
+
+    bool Config::isExcludedSource(std::string source_file) {
+        for (auto& regex : this->source_excludes) {
+            std::smatch match;
+            if (std::regex_search(source_file, match, regex)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     void loadConfig(Config& conf) {
