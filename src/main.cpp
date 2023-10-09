@@ -50,11 +50,6 @@ int main(int argc, char** argv) {
     }
     applyCliArgs(conf);
 
-    if (conf.reportDir.empty()) {
-        std::cout << "Error: need to specify an output directory..." << std::endl;
-        return 1;
-    }
-
     Report report;
     report.datetime = time(NULL);
     loadGcovData(report, conf);
