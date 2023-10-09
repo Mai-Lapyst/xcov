@@ -177,6 +177,8 @@ namespace xcov {
 
         void recalcStats();
 
+        void sortFiles();
+
         friend void to_json(nlohmann::json& j, const Report& t);
         friend void from_json(const nlohmann::json& j, Report& t);
     };

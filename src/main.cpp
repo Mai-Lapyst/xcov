@@ -59,6 +59,7 @@ int main(int argc, char** argv) {
     report.datetime = time(NULL);
     loadGcovData(report, conf);
     report.recalcStats();
+    report.sortFiles();
 
     HtmlReporter reporter(conf);
     reporter.generateReport(report);

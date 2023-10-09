@@ -316,6 +316,15 @@ namespace xcov {
         }
     }
 
+    void Report::sortFiles() {
+        std::sort(
+            this->sourceFiles.begin(), this->sourceFiles.end(),
+            [] (const SourceFile& a, const SourceFile& b) {
+                return a.path < b.path;
+            }
+        );
+    }
+
     SourceFile& Report::findOrCreate(std::string path) {
         for (SourceFile& srcFile : this->sourceFiles) {
             if (srcFile.path == path) {
