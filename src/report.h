@@ -9,8 +9,14 @@ namespace xcov {
     class BranchCoverage {
     public:
         bool fallthrough;
+
+        // count of how many times this branch was triggered; a count of <=0 means it wasn't triggered at all
         long count;
+
         bool throw_flag;
+
+        BranchCoverage();
+        BranchCoverage(bool fallthrough, long count, bool throw_flag);
 
         friend void to_json(nlohmann::json& j, const BranchCoverage& t);
         friend void from_json(const nlohmann::json& j, BranchCoverage& t);
@@ -36,6 +42,8 @@ namespace xcov {
 
         LineCoverage();
         LineCoverage(long count, long line_number, bool unexecuted_block, std::string function_name);
+
+        void addBranchData(BranchCoverage& newBranch);
 
         friend void to_json(nlohmann::json& j, const LineCoverage& t);
         friend void from_json(const nlohmann::json& j, LineCoverage& t);

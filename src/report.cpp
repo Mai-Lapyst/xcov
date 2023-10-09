@@ -7,6 +7,12 @@
 
 namespace xcov {
 
+    BranchCoverage::BranchCoverage() {}
+
+    BranchCoverage::BranchCoverage(bool fallthrough, long count, bool throw_flag)
+        : fallthrough(fallthrough), count(count), throw_flag(throw_flag)
+    {}
+
     void to_json(nlohmann::json& j, const BranchCoverage& t) {
         j["fallthrough"] = t.fallthrough;
         j["count"] = t.count;
@@ -26,6 +32,10 @@ namespace xcov {
     LineCoverage::LineCoverage(long count, long line_number, bool unexecuted_block, std::string function_name)
         : count(count), line_number(line_number), unexecuted_block(unexecuted_block), function_name(function_name)
     {}
+
+    void LineCoverage::addBranchData(BranchCoverage& newBranch) {
+        this->branches.push_back(newBranch);
+    }
 
     void to_json(nlohmann::json& j, const LineCoverage& t) {
         j["branches"] = t.branches;
