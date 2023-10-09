@@ -1,5 +1,6 @@
 #include "report.h"
 #include "highlight/highlight.h"
+#include "utils.h"
 
 #include <fstream>
 #include <sstream>
@@ -236,10 +237,49 @@ namespace xcov {
         if (it == this->lines.end()) {
             // not present
             this->lines.push_back(newLine);
+            return;
+        }
+
+        std::string demangled_old_name = utils::demangleCpp(it->function_name);
+        std::string demangled_new_name = utils::demangleCpp(newLine.function_name);
+
+        // TODO: check first if it really is a c++ symbol (prefix _ZN)
+        // TODO: support other name-mangeling formats like D
+
+        if (demangled_old_name != demangled_new_name) {
+            // Same line, but another function!
+            // This happens when, for example, a lambda is used in certain ways in C++
+            // 
+            // The current behavior is to increment the line-count and simply copy over the branches
+            // to the old line.
+            // 
+            // TODO: maybe we should restructure this so one line can hold multiple sets of branchdata
+
+            std::cerr << "Warning: " << this->path
+                << " got coverage data for two different function on same line: "
+                << demangled_old_name << ", " << demangled_new_name
+                << std::endl;
+
+            (*it).count += newLine.count;
+            for (auto& br : newLine.branches) {
+                (*it).branches.push_back(br);
+            }
         }
         else {
             (*it).count += newLine.count;
-            // TODO: add branch data
+
+            if (newLine.branches.size() != (*it).branches.size()) {
+                throw std::runtime_error("Cannot add linedata with different count of branches");
+            } else {
+                for (size_t i = 0; i < newLine.branches.size(); i++) {
+                    auto& oldBr = (*it).branches.at(i);
+                    auto& newBr = newLine.branches.at(i);
+
+                    // TODO: what about the other fields?
+
+                    oldBr.count += newBr.count;
+                }
+            }
         }
     }
 
