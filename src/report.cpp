@@ -110,10 +110,14 @@ namespace xcov {
         j["line_number"] = t.line_number;
         j["unexecuted_block"] = t.unexecuted_block;
         j["coverage_present"] = t.coverage_present;
+        j["is_excluded"] = t.is_excluded;
         j["source_line"] = t.source_line;
 
         j["state"] = "";
-        if (t.coverage_present) {
+        if (t.is_excluded) {
+            j["state"] = "excluded";
+        }
+        else if (t.coverage_present) {
             j["state"] = t.count > 0 ? "hit" : "miss";
         }
 
@@ -204,7 +208,16 @@ namespace xcov {
 
         std::string line;
         long line_number = 1;
+        bool is_inside_exluded = false;
         while (std::getline(strstream, line)) {
+            if (line.find("LCOV_EXCL_START") != std::string::npos) {
+                is_inside_exluded = true;
+            }
+            if (line.find("LCOV_EXCL_STOP") != std::string::npos) {
+                is_inside_exluded = false;
+            }
+
+            bool is_line_excluded = is_inside_exluded || (line.find("LCOV_EXCL_LINE") != std::string::npos);
 
             std::vector<LineCoverage>::iterator gcovData = std::find_if(
                 this->lines.begin(), this->lines.end(),
@@ -214,10 +227,10 @@ namespace xcov {
             );
 
             if (gcovData != this->lines.end()) {
-                sourceLines.push_back(SourceLine( *gcovData, line_number, line ));
+                sourceLines.push_back(SourceLine( *gcovData, line_number, line, is_line_excluded ));
             }
             else {
-                sourceLines.push_back(SourceLine( line_number, line ));
+                sourceLines.push_back(SourceLine( line_number, line, is_line_excluded ));
             }
             line_number++;
         }

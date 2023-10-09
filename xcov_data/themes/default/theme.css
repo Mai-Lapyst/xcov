@@ -5,6 +5,7 @@
 
     --covered_color: #85E485;
     --uncovered_color: #FF8C8C;
+    --excluded_color: #53BFFD;
 
     --taken_branch_color: green;
     --not_taken_branch_color: red;
@@ -55,6 +56,12 @@
 }
 .source-line.miss .src {
     background-color: var(--uncovered_color) !important;
+}
+.source-line.excluded .linecount {
+    background-color: var(--excluded_color) !important;
+}
+.source-line.excluded .src {
+    background-color: var(--excluded_color) !important;
 }
 
 .right {

@@ -99,7 +99,7 @@
                 <tr class="source-line {{ line.state }}">
                     <td class="lineno">{{ line.line_number }}</td>
                     <td class="linebranch">
-## if line.branches
+## if not line.is_excluded and line.coverage_present and line.branches
                             <details>
                                 <summary>{{ line.takenBranchesCount }}/{{ length(line.branches) }}</summary>
                                 <div class="branch_content">
@@ -114,7 +114,7 @@
                             </details>
 ## endif
                     </td>
-                    <td class="linecount">{% if line.coverage_present %}{% if line.count > 0 %}{{ line.count }}{% else %}✗{% endif %}{% endif %}</td>
+                    <td class="linecount">{% if line.is_excluded %}&#x2212;{% else %}{% if line.coverage_present %}{% if line.count > 0 %}{{ line.count }}{% else %}✗{% endif %}{% endif %}{% endif %}</td>
                     <td class="src">{{ line.source_line }}</td>
                 </tr>
 ## endfor

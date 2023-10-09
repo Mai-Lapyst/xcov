@@ -116,17 +116,20 @@ namespace xcov {
         // if this field is true, the fields above contain valid data; if not, the above fields should NOT be read
         bool coverage_present;
 
+        // true if the line is excluded and the above data is not valid
+        bool is_excluded = false;
+
         // the (highlighted) source line
         std::string source_line;
 
-        SourceLine(LineCoverage coverageData, long line_number, std::string source_line)
+        SourceLine(LineCoverage coverageData, long line_number, std::string source_line, bool is_excluded)
             : branches(coverageData.branches), count(coverageData.count),
                 line_number(line_number), unexecuted_block(coverageData.unexecuted_block),
-                coverage_present(true), source_line(source_line)
+                coverage_present(true), is_excluded(is_excluded), source_line(source_line)
         {}
 
-        SourceLine(long line_number, std::string source_line)
-            : line_number(line_number), coverage_present(false), source_line(source_line)
+        SourceLine(long line_number, std::string source_line, bool is_excluded)
+            : line_number(line_number), coverage_present(false), is_excluded(is_excluded), source_line(source_line)
         {}
 
         friend void to_json(nlohmann::json& j, const SourceLine& t);
