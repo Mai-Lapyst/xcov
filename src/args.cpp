@@ -12,6 +12,7 @@ namespace xcov {
     #define FILENAMEING_OPT_ID  1002
     #define LANGDEF_OPT_ID      1003
     #define OUTFORMAT_OPT_ID    1004
+    #define REPORTFORMAT_OPT_ID 1005
 
     struct option long_options[] = {
         { "help", no_argument, NULL, 'h' },
@@ -26,6 +27,8 @@ namespace xcov {
 
         { "lang-def", required_argument, NULL, LANGDEF_OPT_ID },
         { "out-format", required_argument, NULL, OUTFORMAT_OPT_ID },
+
+        { "format", required_argument, NULL, REPORTFORMAT_OPT_ID },
 
         { "keep-gcov", no_argument, (int*)&(gCliArgs.keep_gcov), 1 },
         {0, 0, 0, 0}
@@ -162,6 +165,13 @@ namespace xcov {
                     gCliArgs.hasOutFormat = true;
                     gCliArgs.outFormat = optarg;
                     PRINT_VERBOSE("Setting output definition file for source-highlight: %s\n", optarg);
+                    break;
+                }
+
+                case REPORTFORMAT_OPT_ID: {
+                    gCliArgs.hasReportFormat = true;
+                    gCliArgs.reportFormat = optarg;
+                    PRINT_VERBOSE("Setting report format: %s\n", optarg);
                     break;
                 }
 

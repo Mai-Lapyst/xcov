@@ -36,6 +36,9 @@ void applyCliArgs(xcov::Config& conf) {
     if (gCliArgs.hasOutFormat) {
         conf.outFormat = gCliArgs.outFormat;
     }
+    if (gCliArgs.hasReportFormat) {
+        conf.reportFormat = gCliArgs.reportFormat;
+    }
 }
 
 int main(int argc, char** argv) {
@@ -56,7 +59,13 @@ int main(int argc, char** argv) {
     report.recalcStats();
     report.sortFiles();
 
-    HtmlReporter reporter(conf);
-    reporter.generateReport(report);
+    if (conf.reportFormat == "html") {
+        HtmlReporter reporter(conf);
+        reporter.generateReport(report);
+    }
+    else {
+        std::cerr << "Error: unknown report format '" << conf.reportFormat << "'" << std::endl;
+        return 1;
+    }
     return 0;
 }

@@ -25,6 +25,7 @@ namespace xcov {
 
         bool hasLangDef = false; std::string langDef;
         bool hasOutFormat = false; std::string outFormat;
+        bool hasReportFormat = false; std::string reportFormat;
 
         bool keep_gcov = false;
     };

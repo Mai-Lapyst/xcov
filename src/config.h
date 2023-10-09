@@ -30,6 +30,9 @@ namespace xcov {
         // file to save the report in; used for single-file reporter
         fs::path reportPath;
 
+        // format of report to generate
+        std::string reportFormat;
+
         // title for the report
         std::string title = "Code Coverage Report";
 
