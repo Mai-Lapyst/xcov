@@ -167,6 +167,14 @@ namespace xcov {
                         this->lineStats.hits--;
                     }
                     this->lineStats.recalcCoverage();
+
+                    // change branchstats
+                    this->branchStats.total -= lineCovData->branches.size();
+                    for (auto& br : lineCovData->branches) {
+                        if (br.count > 0) { this->branchStats.hits--; }
+                    }
+                    this->branchStats.recalcCoverage();
+
                     this->lines.erase(lineCovData);
                 }
             }
