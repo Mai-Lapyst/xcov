@@ -115,6 +115,12 @@ namespace xcov {
         if (t.coverage_present) {
             j["state"] = t.count > 0 ? "hit" : "miss";
         }
+
+        int takenBranches = 0;
+        for (auto& branch : t.branches) {
+            if (branch.count > 0) { takenBranches++; }
+        }
+        j["takenBranchesCount"] = takenBranches;
     }
 
     void from_json(const nlohmann::json& j, SourceLine& t) {

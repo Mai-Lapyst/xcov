@@ -98,7 +98,22 @@
 ## for line in expandLines(file)
                 <tr class="source-line {{ line.state }}">
                     <td class="lineno">{{ line.line_number }}</td>
-                    <td class="linebranch"></td>
+                    <td class="linebranch">
+## if line.branches
+                            <details>
+                                <summary>{{ line.takenBranchesCount }}/{{ length(line.branches) }}</summary>
+                                <div class="branch_content">
+## for branch in line.branches
+## if branch.count > 0
+                                    <div class="taken">✓ Branch {{ loop.index1 }} taken {{ branch.count }} times.</div>
+## else
+                                    <div class="not_taken">✗ Branch {{ loop.index1 }} taken {{ branch.count }} times.</div>
+## endif
+## endfor
+                                </div>
+                            </details>
+## endif
+                    </td>
                     <td class="linecount">{% if line.coverage_present %}{% if line.count > 0 %}{{ line.count }}{% else %}✗{% endif %}{% endif %}</td>
                     <td class="src">{{ line.source_line }}</td>
                 </tr>

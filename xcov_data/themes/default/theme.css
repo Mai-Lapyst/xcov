@@ -5,6 +5,9 @@
 
     --covered_color: #85E485;
     --uncovered_color: #FF8C8C;
+
+    --taken_branch_color: green;
+    --not_taken_branch_color: red;
 }
 .file-source {
     font-family: monospace;
@@ -15,8 +18,26 @@
     padding: 1px 10px;
 }
 .file-source td {
-    white-space: pre;
     padding: 1px 10px;
+}
+.file-source td.src {
+    white-space: pre;
+}
+.file-source td.linebranch .branch_content {
+    position: absolute;
+    background: white;
+    border: solid gray 1px;
+    box-shadow: 5px 5px 10px gray;
+    padding: 1em;
+    text-align: left;
+    font-size: 0.85rem;
+    font-family: sans-serif;
+}
+.file-source td.linebranch .taken {
+    color: var(--taken_branch_color);
+}
+.file-source td.linebranch .not_taken {
+    color: var(--not_taken_branch_color);
 }
 
 .file-source {
