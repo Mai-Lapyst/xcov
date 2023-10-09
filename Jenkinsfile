@@ -5,7 +5,7 @@ pipeline {
         stage('Prepare system') {
             steps {
                 sh 'pacman --noconfirm -Syu'
-                sh 'pacman --noconfirm -S base-devel curl gzip tar source-highlight boost-libs'
+                sh 'pacman --noconfirm -S base-devel curl gzip tar source-highlight boost boost-libs'
                 sh './install_deps.sh'
             }
         }
