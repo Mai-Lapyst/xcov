@@ -51,6 +51,9 @@ namespace xcov {
         puts("                                        i.e.: the file 'src/main.cpp' will become '<output dir>/src.main.cpp.html'");
         puts("                        - path       : just creates the folders of the old path relative to the new path.");
         puts("                                        i.e.: if your file was 'src/main.cpp' the output is written to '<output dir>/src/main.cpp.html'");
+        puts(" --format FORMAT      Sets the report format to use.");
+        puts("                       Available:");
+        puts("                         - html : Prints a html report to <reportDir>");
 
         puts("Source-highlight options:");
         puts(" --lang-def FILE      Specifies an definition file to use for the highlighting (default: cpp)");
