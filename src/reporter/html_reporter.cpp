@@ -11,6 +11,11 @@ namespace xcov {
     HtmlReporter::HtmlReporter(Config& conf) : Reporter(conf) {
 
         this->outputDir = conf.reportDir;
+        if (this->outputDir.empty()) {
+            std::cerr << "Error: HtmlReporter needs reportDir to be set!" << std::endl;
+            std::exit(1);
+        }
+
         this->tmplDir = conf.templatePath;
         this->title = conf.title;
 
