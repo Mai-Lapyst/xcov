@@ -24,8 +24,11 @@ namespace xcov {
         // dir to search from, default is the pwd
         fs::path rootDir = fs::current_path();
 
-        // dir to save the reports in; needs to be specified explictily
+        // dir to save the reports in; needs to be specified explictily; used for multi-file reporter
         fs::path reportDir;
+
+        // file to save the report in; used for single-file reporter
+        fs::path reportPath;
 
         // title for the report
         std::string title = "Code Coverage Report";

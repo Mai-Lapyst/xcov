@@ -82,6 +82,7 @@ namespace xcov {
                     case SEC_MAIN: {
                         CONFIG_KEY(rootDir);
                         CONFIG_KEY(reportDir);
+                        CONFIG_KEY(reportPath);
                         CONFIG_KEY(title);
                         CONFIG_KEY(templatePath);
                         if (key == "nameingStrategy") {
