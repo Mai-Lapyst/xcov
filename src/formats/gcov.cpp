@@ -162,7 +162,12 @@ namespace xcov {
 
                 for (GCovLine& line : gcovSrcFile.lines) {
                     LineCoverage data = LineCoverage(line.count, line.line_number, line.unexecuted_block, line.function_name);
-                    // TODO: add branch data
+
+                    for (GCovBranch& branch : line.branches) {
+                        BranchCoverage brData = BranchCoverage(branch.fallthrough, branch.count, branch.throw_flag);
+                        data.addBranchData(brData);
+                    }
+
                     srcFile.addLineData(data);
                 }
 
