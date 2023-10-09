@@ -254,7 +254,7 @@ namespace xcov {
     }
 
     void SourceFile::recalcStats() {
-        // long branchCount = 0, branchHits = 0;
+        long branchCount = 0, branchHits = 0;
 
         this->lineStats = CoverageStats(0, this->lines.size());
         for (LineCoverage& line : this->lines) {
@@ -262,16 +262,16 @@ namespace xcov {
                 this->lineStats.hits++;
             }
 
-            // branchCount += line.branches.size();
-            // for (BranchCoverage& branch : line.branches) {
-            //     if (branch.count > 0) {
-            //         branchHits++;
-            //     }
-            // }
+            branchCount += line.branches.size();
+            for (BranchCoverage& branch : line.branches) {
+                if (branch.count > 0) {
+                    branchHits++;
+                }
+            }
         }
         this->lineStats.recalcCoverage();
 
-        // this->branchStats = CoverageStats(branchHits, branchCount);
+        this->branchStats = CoverageStats(branchHits, branchCount);
 
         this->funcStats = CoverageStats(0, this->funcs.size());
         for (FunctionCoverage& func : this->funcs) {
