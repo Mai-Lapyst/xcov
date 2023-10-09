@@ -5,7 +5,7 @@ namespace xcov {
 
     CliArgs gCliArgs;
 
-    #define VERSION_STRING      "v1.1"
+    #define VERSION_STRING      "v1.1.0"
 
     #define TITLE_OPT_ID        1000
     #define CONFIG_OPT_ID       1001
