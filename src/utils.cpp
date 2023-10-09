@@ -9,6 +9,12 @@
 #include <boost/asio.hpp>
 #include <boost/algorithm/string.hpp>
 
+#if defined(__GNUG__) || defined(__clang__)
+    #include <cxxabi.h>
+#else
+    #error "Platform not fully supported; missing symbol demangling support!"
+#endif
+
 namespace xcov {
     namespace utils {
 
@@ -79,5 +85,11 @@ namespace xcov {
             return buf;
         }
 
+        std::string demangleCpp(std::string mangledName) {
+            int status;
+            std::unique_ptr<char[], void (*)(void *)> result{
+                abi::__cxa_demangle(mangledName.data(), NULL, NULL, &status), std::free};
+            return (status == 0) ? result.get() : mangledName;
+        }
     }
 }

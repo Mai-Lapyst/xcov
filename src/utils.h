@@ -40,5 +40,13 @@ namespace xcov {
          */
         char* formatDateTime(time_t time, const char* format);
 
+        /**
+         * @brief Demangles a symbol via the c++ abi
+         * 
+         * @param mangledName the mangled name
+         * @return std::string the demangled name
+         */
+        std::string demangleCpp(std::string mangledName);
+
     }
 }
