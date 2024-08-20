@@ -1,0 +1,37 @@
+on: [push]
+
+jobs:
+  build:
+    runs-on: docker
+    container:
+      image: archlinux:base-devel
+    steps:
+      - name: Prepare system
+        run: |
+          pacman --noconfirm -Syu
+          pacman --noconfirm -S base-devel curl gzip tar source-highlight boost boost-libs nodejs git
+          ./install_deps.sh
+
+      - uses: actions/checkout@v4
+
+      - name: Compile xcov
+        id: build
+        run: |
+          VERSION=$(grep -Poe 'VERSION_STRING\s*"\K[^"]*' ./src/args.cpp)
+          echo "Found version: $VERSION"
+          echo version="$VERSION" >> $GITHUB_OUTPUT
+
+          make release
+          PREFIX=./dist make install
+          cd ./dist && tar -cvJf ../xcov_$VERSION.tar.xz *
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: xcov_${{ steps.build.outputs.version }}.tar
+          path: ./xcov_${{ steps.build.outputs.version }}.tar
+
+      - if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/action-gh-release@v2
+        with:
+          files: |
+            xcov_${{ steps.build.outputs.version }}.tar
