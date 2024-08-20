@@ -10,9 +10,11 @@ jobs:
         run: |
           pacman --noconfirm -Syu
           pacman --noconfirm -S base-devel curl gzip tar source-highlight boost boost-libs nodejs git
-          ./install_deps.sh
 
       - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: ./install_deps.sh
 
       - name: Compile xcov
         id: build
